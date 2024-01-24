@@ -19,3 +19,18 @@ import java.util.Scanner;
         JTextField searchField = new JTextField(20);
         JButton searchButton = new JButton("Search");
         JLabel gifLabel = new JLabel();
+searchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                searchGifAndUpdateLabel(searchField.getText().trim(), gifLabel);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                searchGifAndUpdateLabel(searchField.getText().trim(), gifLabel);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+}
+        });
