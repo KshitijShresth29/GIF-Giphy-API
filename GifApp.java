@@ -34,3 +34,15 @@ searchField.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
 }
         });
+
+
+private static void displayGif(String gifUrl, JLabel gifLabel) {
+        try {
+            URL url = new URL(gifUrl);
+            ImageIcon imageIcon = new ImageIcon(url);
+            gifLabel.setIcon(imageIcon);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
