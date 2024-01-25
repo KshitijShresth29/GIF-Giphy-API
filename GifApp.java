@@ -34,6 +34,16 @@ searchField.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
 }
         });
+  String imagesField = jsonResponse.substring(jsonResponse.indexOf("\"images\":") + 10);
+            String gifUrl = imagesField.substring(imagesField.indexOf("\"url\":\"") + 7);
+            gifUrl = gifUrl.substring(0, gifUrl.indexOf("\""));
+    
+            return gifUrl;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
  private static String convertStreamToString(InputStream inputStream) {
         Scanner scanner = new Scanner(inputStream).useDelimiter("\\A");
         return scanner.hasNext() ? scanner.next() : "";
