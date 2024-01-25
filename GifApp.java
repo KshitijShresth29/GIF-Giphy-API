@@ -34,7 +34,10 @@ searchField.getDocument().addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent e) {
 }
         });
-
+ private static String convertStreamToString(InputStream inputStream) {
+        Scanner scanner = new Scanner(inputStream).useDelimiter("\\A");
+        return scanner.hasNext() ? scanner.next() : "";
+    }
 
 private static void displayGif(String gifUrl, JLabel gifLabel) {
         try {
