@@ -19,6 +19,34 @@ public class GifApp {
         SwingUtilities.invokeLater(() -> createAndShowGUI());
     }
 
+  private static void createAndShowGUI() {
+        JFrame frame = new JFrame("GIF Search App");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500, 400);
+
+        JPanel panel = new JPanel();
+        JTextField searchField = new JTextField(20);
+        JButton searchButton = new JButton("Search");
+        JLabel gifLabel = new JLabel();
+
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                searchGifAndUpdateLabel(searchField.getText().trim(), gifLabel);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                searchGifAndUpdateLabel(searchField.getText().trim(), gifLabel);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                
+            }
+        });
+   
+
  private static void createAndShowGUI() {
         JFrame frame = new JFrame("GIF Search App");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
