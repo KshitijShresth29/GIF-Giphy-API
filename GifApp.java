@@ -46,35 +46,7 @@ public class GifApp {
             }
         });
 
-  private static void createAndShowGUI() {
-        JFrame frame = new JFrame("GIF Search App");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 400);
-
-        JPanel panel = new JPanel();
-        JTextField searchField = new JTextField(20);
-        JButton searchButton = new JButton("Search");
-        JLabel gifLabel = new JLabel();
-
-        searchField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                searchGifAndUpdateLabel(searchField.getText().trim(), gifLabel);
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                searchGifAndUpdateLabel(searchField.getText().trim(), gifLabel);
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                
-            }
-        });
-   
-
- searchButton.addActionListener(new ActionListener() {
+        searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 searchGifAndUpdateLabel(searchField.getText().trim(), gifLabel);
@@ -88,7 +60,27 @@ public class GifApp {
         frame.getContentPane().add(BorderLayout.CENTER, panel);
         frame.setVisible(true);
     }
-  String imagesField = jsonResponse.substring(jsonResponse.indexOf("\"images\":") + 10);
+
+    private static void searchGifAndUpdateLabel(String query, JLabel gifLabel) {
+        if (!query.isEmpty()) {
+            String gifUrl = searchGif(query);
+            if (gifUrl != null) {
+                displayGif(gifUrl, gifLabel);
+            }
+        }
+    }
+    private static String searchGif(String query) {
+        try {
+            String urlStr = SEARCH_ENDPOINT + "?api_key=" + API_KEY + "&q=" + query;
+            URL url = new URL(urlStr);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+    
+            InputStream responseStream = connection.getInputStream();
+            String jsonResponse = convertStreamToString(responseStream);
+            connection.disconnect();
+     
+            String imagesField = jsonResponse.substring(jsonResponse.indexOf("\"images\":") + 10);
             String gifUrl = imagesField.substring(imagesField.indexOf("\"url\":\"") + 7);
             gifUrl = gifUrl.substring(0, gifUrl.indexOf("\""));
     
@@ -98,12 +90,13 @@ public class GifApp {
             return null;
         }
     }
- private static String convertStreamToString(InputStream inputStream) {
+    
+    private static String convertStreamToString(InputStream inputStream) {
         Scanner scanner = new Scanner(inputStream).useDelimiter("\\A");
         return scanner.hasNext() ? scanner.next() : "";
     }
 
-private static void displayGif(String gifUrl, JLabel gifLabel) {
+    private static void displayGif(String gifUrl, JLabel gifLabel) {
         try {
             URL url = new URL(gifUrl);
             ImageIcon imageIcon = new ImageIcon(url);
@@ -113,3 +106,4 @@ private static void displayGif(String gifUrl, JLabel gifLabel) {
         }
     }
 }
+
